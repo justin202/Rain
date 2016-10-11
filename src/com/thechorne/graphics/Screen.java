@@ -2,9 +2,11 @@ package com.thechorne.graphics;
 
 import java.util.Random;
 
+import com.thechorne.rain.level.tile.Tile;
+
 public class Screen {
 	
-	private int width, height;
+	public int width, height;
 	private int[] pixels;
 	
 	private final int TILE_SIZE = 64;
@@ -38,6 +40,17 @@ public class Screen {
 				int xp = x + xOffset;
 				if(xp < 0 || xp >= width) continue;
 				pixels[xp + yp * width] = Sprite.grass.pixels[(x & 15) + (y & 15) * Sprite.grass.SIZE];
+			}
+		}
+	}
+
+	public void renderTile(int xp, int yp, Tile tile){
+		for(int y = 0; y < tile.sprite.SIZE; y++){
+			int ya = y + yp;
+			for(int x = 0; x < tile.sprite.SIZE; x++){
+				int xa = x + xp;
+				if(xa < 0 || xa >= width || ya < 0 || ya >= height) continue;
+				pixels[xa + ya * width] = Sprite.grass.pixels[x + y * tile.sprite.SIZE];
 			}
 		}
 	}
