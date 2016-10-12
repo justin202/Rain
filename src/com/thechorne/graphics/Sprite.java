@@ -13,6 +13,7 @@ public class Sprite {
 	private SpriteSheet sheet;
 	
 	public static Sprite grass = new Sprite(16, 0, 0, SpriteSheet.tiles);
+	public static Sprite voidTile = new Sprite(16, 0x1b87e0);
 	
 	/**
 	 * constructor
@@ -28,6 +29,23 @@ public class Sprite {
 		this.y = y * SIZE;
 		this.sheet = sheet;
 		load();
+	}
+	
+	/**
+	 * constructor for the tile with only one color
+	 * @param size
+	 * @param colour
+	 */
+	public Sprite(int size, int color){
+		SIZE = size;
+		pixels = new int[SIZE * SIZE];
+		setColor(color);
+	}
+
+	private void setColor(int color) {
+		for(int i = 0; i < SIZE * SIZE; i++){
+			pixels[i] = color;
+		}
 	}
 
 	private void load() {

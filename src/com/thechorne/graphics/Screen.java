@@ -8,7 +8,7 @@ public class Screen {
 	
 	public int width, height;
 	private int[] pixels;
-	
+	public int xOffset, yOffset;
 	private final int TILE_SIZE = 64;
 	private final int TILE_SIZE_MASK = TILE_SIZE - 1;
 	
@@ -32,27 +32,33 @@ public class Screen {
 		for(int i = 0; i < pixels.length; pixels[i++] = 0);
 	}
 
-	public void render(int xOffset, int yOffset){
-		for(int y = 0; y < height; y++){
-			int yp = y + yOffset;
-			if( yp < 0 || yp >= height) continue;
-			for(int x = 0; x < width; x++){
-				int xp = x + xOffset;
-				if(xp < 0 || xp >= width) continue;
-				pixels[xp + yp * width] = Sprite.grass.pixels[(x & 15) + (y & 15) * Sprite.grass.SIZE];
-			}
-		}
-	}
-
+	/**
+	 * 
+	 * @param xp x position
+	 * @param yp y position
+	 * @param tile
+	 * 
+	 * xa: the absolute position of x on the map
+	 * ya: the absolute position of y on the map
+	 */
 	public void renderTile(int xp, int yp, Tile tile){
+		xp -= xOffset;
+		yp -= yOffset;
 		for(int y = 0; y < tile.sprite.SIZE; y++){
 			int ya = y + yp;
 			for(int x = 0; x < tile.sprite.SIZE; x++){
 				int xa = x + xp;
-				if(xa < 0 || xa >= width || ya < 0 || ya >= height) continue;
-				pixels[xa + ya * width] = Sprite.grass.pixels[x + y * tile.sprite.SIZE];
+				// render one more tile in the most left, and the same operation for the most right and bottom, which is operated in the level class 
+				if(xa < -tile.sprite.SIZE || xa >= width || ya < 0 || ya >= height) continue;
+				if(xa < 0) xa = 0;
+				pixels[xa + ya * width] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
 			}
 		}
+	}
+	
+	public void setOffset(int xOffset, int yOffset){
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 	}
 
 }

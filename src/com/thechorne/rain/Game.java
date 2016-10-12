@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 
 import com.thechorne.graphics.Screen;
 import com.thechorne.rain.input.Keyboard;
+import com.thechorne.rain.level.Level;
+import com.thechorne.rain.level.RandomLevel;
 
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +24,7 @@ public class Game extends Canvas implements Runnable {
 	private int scale = 3;
 	
 	private Thread thread;
-	
+	private Level level;
 	private JFrame frame;
 	
 	private boolean running = false;
@@ -38,7 +40,7 @@ public class Game extends Canvas implements Runnable {
 		Dimension size = new Dimension(width * scale, height * scale);
 		setPreferredSize(size);
 		frame = new JFrame();
-		
+		level = new RandomLevel(64, 64);
 		key = new Keyboard();
 		addKeyListener(key);
 		
@@ -76,7 +78,8 @@ public class Game extends Canvas implements Runnable {
 		}
 		
 		screen.clear();
-		screen.render(x, y);
+		level.render(x, y, screen);
+		
 		for(int i = 0; i < pixels.length; i++){
 			pixels[i] = screen.getPixels()[i];
 		}
