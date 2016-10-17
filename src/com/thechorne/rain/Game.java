@@ -1,7 +1,9 @@
 package com.thechorne.rain;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -10,7 +12,10 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 import com.thechorne.graphics.Screen;
+import com.thechorne.rain.entity.mob.Player;
 import com.thechorne.rain.input.Keyboard;
+import com.thechorne.rain.level.Level;
+import com.thechorne.rain.level.RandomLevel;
 
 public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
@@ -22,8 +27,9 @@ public class Game extends Canvas implements Runnable {
 	private int scale = 3;
 	
 	private Thread thread;
-	
+	private Level level;
 	private JFrame frame;
+	private Player player;
 	
 	private boolean running = false;
 	
@@ -38,8 +44,9 @@ public class Game extends Canvas implements Runnable {
 		Dimension size = new Dimension(width * scale, height * scale);
 		setPreferredSize(size);
 		frame = new JFrame();
-		
+		level = new RandomLevel(64, 64);
 		key = new Keyboard();
+		player = new Player(key);
 		addKeyListener(key);
 		
 		screen = new Screen(width, height);
@@ -59,30 +66,30 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	int x = 0, y = 0;
 	private void update(){
 		key.update();
-		if(key.up) y--;
-		if(key.down) y++;
-		if(key.left) x--;
-		if(key.right) x++;
+		player.update();
 	}
 	
 	private void render(){
 		BufferStrategy bs = getBufferStrategy();
 		if(bs == null){
-			createBufferStrategy(1);
+			createBufferStrategy(3);
 			return;
 		}
 		
 		screen.clear();
-		screen.render(x, y);
+		level.render(player.x, player.y, screen);
+		
 		for(int i = 0; i < pixels.length; i++){
 			pixels[i] = screen.getPixels()[i];
 		}
 		
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Verdana", 0, 50));
+		g.drawString("X: " + player.x + ", Y: " + player.y, 350, 300);
 		g.dispose();
 		bs.show();
 	}
@@ -96,7 +103,7 @@ public class Game extends Canvas implements Runnable {
 		requestFocus();							// request focus on the canvas
 		while(running){
 			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;		// every loop contains how many ns. 累加至 1/60s，更新 
+			delta += (now - lastTime) / ns;		// every loop contains how many ns. 1/60
 			lastTime = now;
 			while(delta >= 1){
 				update();

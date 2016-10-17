@@ -6,9 +6,10 @@ import com.thechorne.graphics.Sprite;
 public class Tile {
 	
 	private int x, y;
-	private Sprite sprite;
+	public Sprite sprite;
 	
 	public static Tile grass = new GrassTile(Sprite.grass);
+	public static Tile voidTile = new VoidTile(Sprite.voidTile);
 	
 	public Tile(Sprite sprite){
 		this.sprite = sprite;
