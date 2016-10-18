@@ -1,5 +1,7 @@
 package com.thechorne.rain.entity.mob;
 
+import com.thechorne.graphics.Screen;
+import com.thechorne.graphics.Sprite;
 import com.thechorne.rain.input.Keyboard;
 
 public class Player extends Mob {
@@ -27,8 +29,8 @@ public class Player extends Mob {
 		if(xa != 0 || ya != 0) move(xa, ya);
 	}
 	
-	public void render(){
-		
+	public void render(Screen screen){
+		screen.renderPlayer(x, y, Sprite.player0);
 	}
 
 }

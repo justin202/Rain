@@ -55,6 +55,21 @@ public class Screen {
 			}
 		}
 	}
+
+	public void renderPlayer(int xp, int yp, Sprite sprite){
+		xp -= xOffset;
+		yp -= yOffset;
+		for(int y = 0; y < 16; y++){
+			int ya = y + yp;
+			for(int x = 0; x < 16; x++){
+				int xa = x + xp;
+				// render one more tile in the most left, and the same operation for the most right and bottom, which is operated in the level class 
+				if(xa < -16 || xa >= width || ya < 0 || ya >= height) continue;
+				if(xa < 0) xa = 0;
+				pixels[xa + ya * width] = sprite.pixels[x + y * 16];
+			}
+		}
+	}
 	
 	public void setOffset(int xOffset, int yOffset){
 		this.xOffset = xOffset;
