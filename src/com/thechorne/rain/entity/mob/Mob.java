@@ -6,7 +6,7 @@ import com.thechorne.rain.entity.Entity;
 public abstract class Mob extends Entity {
 	
 	protected Sprite sprite;
-	protected int direction = 0; // 0: up, 1: right, 2: down, 3: left
+	protected int direction = -1; // 0: up, 1: right, 2: down, 3: left, -1: default
 	protected boolean moving = false;
 	
 	public void update(){

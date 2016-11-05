@@ -56,17 +56,30 @@ public class Screen {
 		}
 	}
 
-	public void renderPlayer(int xp, int yp, Sprite sprite){
+	/**
+	 * 
+	 * @param xp
+	 * @param yp
+	 * @param sprite
+	 * @param flip	1: flip x, 2: flip y, 3: flip both x and y
+	 */
+	public void renderPlayer(int xp, int yp, Sprite sprite, int flip){
 		xp -= xOffset;
 		yp -= yOffset;
-		for(int y = 0; y < 16; y++){
+		for(int y = 0; y < sprite.SIZE; y++){
 			int ya = y + yp;
-			for(int x = 0; x < 16; x++){
+			int yFlip = y;
+			if(flip == 2 || flip == 3)
+				yFlip = 31 - y;
+			for(int x = 0; x < sprite.SIZE; x++){
 				int xa = x + xp;
+				int xFlip = x;
+				if(flip == 1 || flip == 3)
+					xFlip = 31 - x;
 				// render one more tile in the most left, and the same operation for the most right and bottom, which is operated in the level class 
-				if(xa < -16 || xa >= width || ya < 0 || ya >= height) continue;
+				if(xa < -sprite.SIZE || xa >= width || ya < 0 || ya >= height) continue;
 				if(xa < 0) xa = 0;
-				int col = sprite.pixels[x + y * 16];
+				int col = sprite.pixels[xFlip + yFlip * sprite.SIZE];
 				if(col != 0xffff00ff) pixels[xa + ya * width] = col;
 			}
 		}
