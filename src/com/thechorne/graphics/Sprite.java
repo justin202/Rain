@@ -13,12 +13,21 @@ public class Sprite {
 	private SpriteSheet sheet;
 	
 	public static Sprite grass = new Sprite(16, 0, 0, SpriteSheet.tiles);
+	public static Sprite flower = new Sprite(16, 1, 0, SpriteSheet.tiles);
+	public static Sprite rock = new Sprite(16, 2, 0, SpriteSheet.tiles);
 	public static Sprite voidTile = new Sprite(16, 0x1b87e0);
 	
-	public static Sprite player0 = new Sprite(16, 0, 10, SpriteSheet.tiles);
-	public static Sprite player1 = new Sprite(16, 1, 10, SpriteSheet.tiles);
-	public static Sprite player2 = new Sprite(16, 0, 11, SpriteSheet.tiles);
-	public static Sprite player3 = new Sprite(16, 1, 11, SpriteSheet.tiles);
+	public static Sprite[] player_forward = {new Sprite(32, 0, 5, SpriteSheet.tiles), 
+												new Sprite(32, 0, 6, SpriteSheet.tiles), 
+												new Sprite(32, 0, 7, SpriteSheet.tiles)};
+	public static Sprite[] player_back = {new Sprite(32, 2, 5, SpriteSheet.tiles),
+											new Sprite(32, 2, 6, SpriteSheet.tiles),
+											new Sprite(32, 2, 7, SpriteSheet.tiles)};
+	public static Sprite[] player_side = {new Sprite(32, 1, 5, SpriteSheet.tiles),
+											new Sprite(32, 1, 6, SpriteSheet.tiles),
+											new Sprite(32, 1, 7, SpriteSheet.tiles)};
+	// rendering the right sprite the reverse way can avoid using the left sprite 
+//	public static Sprite player_left = new Sprite(32, 3, 5, SpriteSheet.tiles);
 	
 	/**
 	 * constructor
